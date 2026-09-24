@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AniMedix - Solusi Kesehatan Hewan & Ternak</title>
+  
+  <!-- Google Fonts: Jua & Jaldi as specified in Grand Design -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&family=Jua&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              tealDark: '#133539',
+              tealDeep: '#194a4f',
+              teal: '#1f646b',
+              tealLight: '#21abb8',
+              tealSoft: '#77e0e4',
+              tealPale: '#e6f7f8',
+              
+              oliveDark: '#5e8642',
+              olive: '#7d9e43',
+              oliveLight: '#9cb958',
+              oliveSoft: '#c5db86',
+              olivePale: '#edf4ce',
+              
+              orange: '#eb792b',
+              orangeLight: '#f09a4b',
+              orangePale: '#fadeab',
+              
+              coral: '#a85c62',
+              coralLight: '#d49b9e'
+            }
+          },
+          fontFamily: {
+            heading: ['Jua', 'sans-serif'],
+            body: ['Jaldi', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom button states matched to Design System */
+    .btn-teal {
+      background-color: #21abb8;
+      color: #ffffff;
+      transition: all 0.2s ease;
+    }
+    .btn-teal:hover {
+      background-color: #1f646b;
+    }
+    .btn-teal:active {
+      background-color: #194a4f;
+    }
+
+    .btn-olive {
+      background-color: #9cb958;
+      color: #ffffff;
+      transition: all 0.2s ease;
+    }
+    .btn-olive:hover {
+      background-color: #7d9e43;
+    }
+    .btn-olive:active {
+      background-color: #5e8642;
+    }
+
+    /* Tab views visibility */
+    .view-screen {
+      display: none;
+    }
+    .view-screen.active {
+      display: block;
+    }
+
+    /* FIGMA EXPORT MODE: Menampilkan SEMUA layar secara berjejer untuk 1x import plugin */
+    body.figma-mode .view-screen {
+      display: block !important;
+      margin-bottom: 4rem;
+      border: 2px dashed #21abb8;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+    body.figma-mode .profile-tab-content {
+      display: block !important;
+      margin-top: 1.5rem;
+      border-top: 2px solid #e2e8f0;
+      padding-top: 1.5rem;
+    }
+    body.figma-mode .figma-modal-block {
+      display: block !important;
+      position: relative !important;
+      inset: auto !important;
+      background: transparent !important;
+      margin-top: 2rem;
+    }
+    body.figma-mode #figma-export-banner {
+      display: block !important;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #21abb8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-body text-slate-800 min-h-screen flex flex-col antialiased selection:bg-brand-tealSoft selection:text-brand-tealDark">
+
+  <header class="bg-brand-tealDark text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-sm">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-oliveSoft animate-pulse"></span>
+        <span class="font-heading tracking-wide text-brand-tealSoft">AniMedix Prototype Preview</span>
+      </div>
+      
+      <!-- Screen Switcher Navigation Bar to browse all wireframe pages -->
+      <nav class="flex flex-wrap items-center gap-1.5 overflow-x-auto py-1 text-xs">
+        <button onclick="switchScreen('landing')" class="nav-btn px-2.5 py-1 rounded bg-brand-teal hover:bg-brand-tealLight transition active-nav" data-target="landing">Landing</button>
+        <button onclick="switchScreen('dashboard')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="dashboard">Dashboard</button>
+        <button onclick="switchScreen('scan')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="scan">Scan Ternak</button>
+        <button onclick="switchScreen('klinik')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="klinik">Klinik</button>
+        <button onclick="switchScreen('tanya-dokter')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="tanya-dokter">Tanya Dokter</button>
+        <button onclick="switchScreen('chat-dokter')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="chat-dokter">Chat Konsul</button>
+        <button onclick="switchScreen('komunitas')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="komunitas">Komunitas</button>
+        <button onclick="switchScreen('profile')" class="nav-btn px-2.5 py-1 rounded bg-brand-tealDeep hover:bg-brand-tealLight transition" data-target="profile">Profil & Sidebar</button>
+        
+        <!-- Toggle Semua Screen Sekaligus untuk Figma -->
+        <button onclick="toggleFigmaMode()" id="btnFigmaMode" class="px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition flex items-center gap-1 shadow-sm">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Figma Mode: Show All
+        </button>
+        <button onclick="openModal('loginModal')" class="px-2.5 py-1 rounded bg-brand-orange hover:bg-brand-orangeLight text-white font-semibold transition">Login / Daftar</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner Penanda Figma Mode -->
+  <div id="figma-export-banner" class="hidden bg-emerald-500 text-white text-center py-2 px-4 text-xs font-semibold shadow-inner">
+    ⚡ MODE FIGMA AKTIF: Semua halaman & komponen wireframe sedang ditampilkan berjajar ke bawah untuk 1x import ke Figma!
+  </div>
+
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      <!-- Logo AniMedix -->
+      <a href="javascript:void(0)" onclick="switchScreen('dashboard')" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-teal to-brand-olive flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
+          <i data-lucide="cross" class="w-6 h-6 stroke-[2.5]"></i>
+        </div>
+        <div>
+          <span class="font-heading text-2xl text-brand-teal tracking-wide block leading-none">AniMedix</span>
+          <span class="text-[11px] text-slate-500 font-semibold tracking-wider uppercase">Animal Healthcare</span>
+        </div>
+      </a>
+
+      <!-- Main Navigation Menu (From Wireframe Page 5 & 6) -->
+      <div class="hidden md:flex items-center gap-7 text-base font-semibold text-slate-700">
+        <a href="javascript:void(0)" onclick="switchScreen('tanya-dokter')" class="hover:text-brand-teal transition flex items-center gap-1.5">
+          <i data-lucide="stethoscope" class="w-4 h-4 text-brand-teal"></i> Tanya Dokter
+        </a>
+        <a href="javascript:void(0)" onclick="switchScreen('klinik')" class="hover:text-brand-teal transition flex items-center gap-1.5">
+          <i data-lucide="map-pin" class="w-4 h-4 text-brand-olive"></i> Klinik Terdekat
+        </a>
+        <a href="javascript:void(0)" onclick="switchScreen('komunitas')" class="hover:text-brand-teal transition flex items-center gap-1.5">
+          <i data-lucide="message-square" class="w-4 h-4 text-brand-orange"></i> Komunitas
+        </a>
+      </div>
+
+      <!-- User Profile Header Component (Wireframe: Prabowo Profile) -->
+      <div class="flex items-center gap-3">
+        <button onclick="switchScreen('profile')" class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-slate-100 transition border border-slate-200">
+          <div class="w-8 h-8 rounded-full bg-brand-oliveSoft text-brand-tealDark font-heading flex items-center justify-center ring-2 ring-brand-tealLight">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </div>
+          <span class="font-heading text-slate-800 text-sm hidden sm:inline">Prabowo</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1">
+
+    <section id="view-landing" class="view-screen active">
+      <!-- Hero Section -->
+      <div class="relative bg-gradient-to-br from-brand-tealDeep via-brand-teal to-brand-oliveDark text-white py-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-xs font-semibold text-brand-olivePale">
+            <i data-lucide="sparkles" class="w-4 h-4 text-brand-tealSoft"></i> Solusi Cerdas Kesehatan Ternak & Peliharaan
+          </div>
+          <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl tracking-wide leading-tight">
+            Periksa Kesehatan Hewan <br><span class="text-brand-tealSoft">Cepat, Akurat & Terhubung</span>
+          </h1>
+          <p class="max-w-2xl mx-auto text-lg text-slate-200 font-normal">
+            Deteksi dini penyakit ternak lewat scan kamera bertenaga AI, konsultasi langsung dengan dokter hewan spesialis, dan temukan klinik terdekat.
+          </p>
+          <div class="pt-4 flex flex-wrap justify-center gap-4">
+            <button onclick="openModal('registerModal')" class="btn-olive px-8 py-3.5 rounded-xl font-heading text-lg shadow-lg shadow-brand-oliveDark/30 hover:scale-[1.02] transition">
+              Daftar Sekarang
+            </button>
+            <button onclick="switchScreen('scan')" class="btn-teal px-8 py-3.5 rounded-xl font-heading text-lg shadow-lg hover:scale-[1.02] transition flex items-center gap-2">
+              <i data-lucide="camera" class="w-5 h-5"></i> Coba Scan Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blog Edukasi Section (Wireframe Page 8) -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="font-heading text-3xl text-brand-tealDark">Blog Edukasi</h2>
+            <p class="text-slate-500 text-sm">Informasi & artikel terpercaya seputar penanganan dan perawatan hewan ternak</p>
+          </div>
+          <a href="javascript:void(0)" class="text-brand-teal font-bold hover:underline flex items-center gap-1">
+            Baca Selengkapnya <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Blog Card 1 -->
+          <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition group">
+            <div class="h-44 bg-gradient-to-tr from-brand-oliveSoft to-brand-olivePale flex items-center justify-center p-6 text-brand-oliveDark group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="heart-pulse" class="w-16 h-16"></i>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-brand-olive">Pencegahan Penyakit</span>
+              <h3 class="font-heading text-xl text-slate-800 leading-snug">Gejala Awal Penyakit Mulut & Kuku (PMK) pada Sapi Potong</h3>
+              <p class="text-slate-600 text-sm line-clamp-2">Langkah tanggap darurat yang wajib dilakukan peternak saat mendapati ternak mengeluarkan busa berlebih.</p>
+            </div>
+          </div>
+
+          <!-- Blog Card 2 -->
+          <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition group">
+            <div class="h-44 bg-gradient-to-tr from-brand-tealSoft to-brand-tealPale flex items-center justify-center p-6 text-brand-teal group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="utensils" class="w-16 h-16"></i>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-brand-teal">Nutrisi & Pakan</span>
+              <h3 class="font-heading text-xl text-slate-800 leading-snug">Formula Pakan Fermentasi untuk Meningkatkan Imunitas Kambing</h3>
+              <p class="text-slate-600 text-sm line-clamp-2">Cara mudah memproduksi konsentrat kaya nutrisi dengan bahan lokal murah meriah.</p>
+            </div>
+          </div>
+
+          <!-- Blog Card 3 -->
+          <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition group">
+            <div class="h-44 bg-gradient-to-tr from-brand-orangePale to-brand-orangeLight/40 flex items-center justify-center p-6 text-brand-orange group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="shield-check" class="w-16 h-16"></i>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Vaksinasi</span>
+              <h3 class="font-heading text-xl text-slate-800 leading-snug">Jadwal Vaksinasi Berkala untuk Kawanan Domba & Kambing</h3>
+              <p class="text-slate-600 text-sm line-clamp-2">Tabel lengkap periode pemberian vaksin dari anakan sampai masa reproduksi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-dashboard" class="view-screen max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="bg-gradient-to-r from-brand-teal to-brand-tealDeep rounded-3xl p-8 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+        <div class="space-y-4 max-w-xl z-10">
+          <div class="inline-block px-3 py-1 rounded-full bg-brand-oliveSoft/30 text-brand-olivePale text-xs font-bold uppercase tracking-wider">
+            Halo, Prabowo! 👋
+          </div>
+          <h2 class="font-heading text-3xl sm:text-4xl leading-tight">Siap Memeriksa Kondisi Kesehatan Hewanmu Hari Ini?</h2>
+          <p class="text-slate-200 text-base">Ambil foto gejala fisik hewan atau gunakan foto dari galeri untuk pemeriksaan awal secara instan.</p>
+          <div class="pt-2">
+            <button onclick="switchScreen('scan')" class="btn-olive px-7 py-3 rounded-xl font-heading text-base shadow-md inline-flex items-center gap-2">
+              <i data-lucide="scan" class="w-5 h-5"></i> Scan Sekarang
+            </button>
+          </div>
+        </div>
+        <div class="w-64 h-64 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 flex flex-col items-center justify-center text-center">
+          <div class="w-20 h-20 rounded-full bg-brand-tealLight/30 flex items-center justify-center mb-3">
+            <i data-lucide="activity" class="w-10 h-10 text-brand-tealSoft"></i>
+          </div>
+          <span class="font-heading text-2xl text-white">4 Hewan</span>
+          <span class="text-xs text-brand-tealPale mt-1">Terdaftar dalam pemantauan rutin Anda</span>
+        </div>
+      </div>
+
+      <!-- Quick Shortcuts Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8">
+        <div onclick="switchScreen('klinik')" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-brand-tealLight transition cursor-pointer shadow-sm hover:shadow-md flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-brand-tealPale text-brand-teal flex items-center justify-center">
+            <i data-lucide="map-pin" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg text-slate-800">Klinik Terdekat</h3>
+            <p class="text-xs text-slate-500">Cari dokter hewan & RS hewan terdekat</p>
+          </div>
+        </div>
+
+        <div onclick="switchScreen('tanya-dokter')" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-brand-tealLight transition cursor-pointer shadow-sm hover:shadow-md flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-brand-olivePale text-brand-olive flex items-center justify-center">
+            <i data-lucide="stethoscope" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg text-slate-800">Tanya Dokter</h3>
+            <p class="text-xs text-slate-500">Konsultasi cepat via chat & video</p>
+          </div>
+        </div>
+
+        <div onclick="switchScreen('komunitas')" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-brand-tealLight transition cursor-pointer shadow-sm hover:shadow-md flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-brand-orangePale text-brand-orange flex items-center justify-center">
+            <i data-lucide="users" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg text-slate-800">Forum Komunitas</h3>
+            <p class="text-xs text-slate-500">Diskusi dan tanya jawab sesama peternak</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-scan" class="view-screen max-w-4xl mx-auto px-4 py-8">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-md p-6 sm:p-8">
+        <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+          <div>
+            <h2 class="font-heading text-2xl text-brand-tealDark">Scan Your Animal</h2>
+            <p class="text-slate-500 text-sm">Pindai bagian tubuh hewan yang bergejala untuk identifikasi instan</p>
+          </div>
+          <!-- Mode Tabs -->
+          <div class="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-bold">
+            <button id="btn-mode-camera" onclick="setScanMode('camera')" class="px-4 py-2 rounded-lg bg-white shadow-sm text-brand-teal">Kamera Langsung</button>
+            <button id="btn-mode-gallery" onclick="setScanMode('gallery')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900">Upload Galeri</button>
+          </div>
+        </div>
+
+        <!-- Camera Viewfinder Section (Page 4 a) -->
+        <div id="scan-camera-container" class="mt-6">
+          <div class="relative w-full aspect-video bg-slate-900 rounded-2xl overflow-hidden flex flex-col items-center justify-between p-6 text-white border-2 border-dashed border-brand-tealSoft/50">
+            <!-- Top Camera Controls -->
+            <div class="w-full flex justify-between items-center text-xs">
+              <span class="bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">Target: Kambing / Sapi / Kucing</span>
+              <div class="flex gap-2">
+                <button class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition" title="Rotate Camera">
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                </button>
+                <button class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition" title="Flash">
+                  <i data-lucide="zap" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Focus Target Box Wireframe -->
+            <div class="w-48 h-48 border-2 border-brand-tealSoft/80 rounded-2xl relative flex items-center justify-center animate-pulse">
+              <div class="w-4 h-4 border-t-2 border-l-2 border-brand-tealSoft absolute -top-1 -left-1"></div>
+              <div class="w-4 h-4 border-t-2 border-r-2 border-brand-tealSoft absolute -top-1 -right-1"></div>
+              <div class="w-4 h-4 border-b-2 border-l-2 border-brand-tealSoft absolute -bottom-1 -left-1"></div>
+              <div class="w-4 h-4 border-b-2 border-r-2 border-brand-tealSoft absolute -bottom-1 -right-1"></div>
+              <span class="text-xs text-brand-tealSoft font-mono tracking-widest uppercase">Posisikan Area Gejala</span>
+            </div>
+
+            <!-- Bottom Capture Actions -->
+            <div class="w-full flex items-center justify-between">
+              <button onclick="setScanMode('gallery')" class="text-xs text-slate-300 hover:text-white flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-lg">
+                <i data-lucide="image" class="w-4 h-4"></i> Use picture from gallery
+              </button>
+              
+              <!-- Take Picture Shutter Button -->
+              <button onclick="triggerScanResult()" class="w-16 h-16 rounded-full bg-white border-4 border-brand-tealLight flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-lg text-slate-800">
+                <div class="w-10 h-10 rounded-full bg-brand-teal"></div>
+              </button>
+              
+              <div class="w-20"></div> <!-- Spacer for balance -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Upload Section (Page 6 bottom & Page 4 b) -->
+        <div id="scan-gallery-container" class="mt-6 hidden">
+          <div class="border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center hover:border-brand-teal transition cursor-pointer bg-slate-50 flex flex-col items-center justify-center">
+            <div class="w-16 h-16 rounded-full bg-brand-tealPale text-brand-teal flex items-center justify-center mb-4">
+              <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-heading text-lg text-slate-800">Upload Foto Hewan dari Galeri</h3>
+            <p class="text-xs text-slate-500 max-w-sm mt-1 mb-4">Format didukung: JPG, PNG, WEBP. Pastikan fokus gambar jelas dan pencahayaan memadai.</p>
+            <input type="file" id="fileInput" class="hidden" onchange="fileChosen(event)">
+            <label for="fileInput" class="btn-teal px-6 py-2.5 rounded-xl font-heading text-sm cursor-pointer shadow-sm">
+              Pilih Foto
+            </label>
+          </div>
+          
+          <div class="mt-6 text-center">
+            <button onclick="triggerScanResult()" class="btn-olive px-10 py-3 rounded-xl font-heading text-base shadow-md">
+              Mulai Analisis (Scan)
+            </button>
+          </div>
+        </div>
+
+        <!-- Scan Result Preview Card (Interactive Feedback) -->
+        <div id="scan-result-card" class="mt-6 p-5 rounded-2xl bg-brand-tealPale/60 border border-brand-tealSoft hidden">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-teal text-white flex items-center justify-center shrink-0">
+              <i data-lucide="check-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+              <span class="inline-block text-xs font-bold text-brand-teal uppercase">Hasil Deteksi Awal AI (Akurasi 94%)</span>
+              <h4 class="font-heading text-xl text-slate-800 mt-0.5">Indikasi Dermatitis / Infeksi Jamur Kulit Ringan</h4>
+              <p class="text-sm text-slate-600 mt-1">Ditemukan bercak kemerahan dan kerontokan bulu lokal. Disarankan menjaga kebersihan kandang dan konsultasi dengan dokter hewan.</p>
+              
+              <div class="mt-4 flex flex-wrap gap-3">
+                <button onclick="switchScreen('tanya-dokter')" class="btn-teal px-4 py-2 rounded-lg text-xs font-heading">
+                  Konsultasikan ke Dokter
+                </button>
+                <button onclick="switchScreen('profile')" class="btn-olive px-4 py-2 rounded-lg text-xs font-heading">
+                  Simpan ke Riwayat Hewan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="view-klinik" class="view-screen max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="flex flex-col lg:flex-row gap-8">
+        
+        <!-- Filter Bar (Wireframe Page 5 - Filter: Provinsi, Kabupaten, Kecamatan, Kelurahan, RT, RW) -->
+        <div class="w-full lg:w-80 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm h-fit space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="sliders-horizontal" class="w-5 h-5 text-brand-teal"></i>
+            <h3 class="font-heading text-xl text-slate-800">Filter Wilayah</h3>
+          </div>
+
+          <div class="space-y-3 text-sm">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Provinsi</label>
+              <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-teal">
+                <option>D.I. Yogyakarta</option>
+                <option>Jawa Tengah</option>
+                <option>Jawa Timur</option>
+                <option>Jawa Barat</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Kabupaten / Kota</label>
+              <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-teal">
+                <option>Sleman</option>
+                <option>Bantul</option>
+                <option>Gunungkidul</option>
+                <option>Kulon Progo</option>
+                <option>Kota Yogyakarta</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Kecamatan</label>
+              <input type="text" placeholder="Contoh: Depok" class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Kelurahan / Desa</label>
+              <input type="text" placeholder="Contoh: Caturtunggal" class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">RT</label>
+                <input type="text" placeholder="01" class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">RW</label>
+                <input type="text" placeholder="04" class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              </div>
+            </div>
+
+            <button class="w-full btn-teal py-2.5 rounded-xl font-heading text-base shadow-sm mt-2 flex items-center justify-center gap-2">
+              <i data-lucide="search" class="w-4 h-4"></i> Cari Klinik
+            </button>
+          </div>
+        </div>
+
+        <!-- Klinik Listing & Detail View (Wireframe Page 7: Tampilan Klinik) -->
+        <div class="flex-1 space-y-6">
+          <!-- Active Detailed Clinic Card (Page 7) -->
+          <div class="bg-white rounded-3xl border-2 border-brand-tealSoft p-6 sm:p-8 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-brand-olivePale text-brand-olive text-xs font-bold">Buka Hari Ini</span>
+                <span class="text-xs text-slate-400">Jarak: 2.1 km</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-500 font-bold text-sm">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400 stroke-amber-400"></i> 4.9 (124 ulasan)
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+              <!-- Clinic info -->
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-brand-tealDark">Klinik Hewan Sehat Makmur Vet</h3>
+                  <p class="text-sm text-slate-500 mt-1 flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-brand-teal"></i> Jl. Kaliurang KM 9.2, Sleman, Yogyakarta
+                  </p>
+                </div>
+
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between border-b border-slate-100 py-1.5">
+                    <span class="text-slate-500">Jadwal Buka:</span>
+                    <span class="font-semibold text-slate-800">Senin - Sabtu (08:00 - 20:00)</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-100 py-1.5">
+                    <span class="text-slate-500">Layanan:</span>
+                    <span class="font-semibold text-slate-800">Ternak Besar, Peliharaan, USG</span>
+                  </div>
+                </div>
+
+                <!-- Praktik Dokter section (Page 7) -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                  <span class="text-xs font-bold text-brand-teal uppercase tracking-wider block mb-2">Praktik Dokter Aktif</span>
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-brand-tealSoft text-brand-tealDark flex items-center justify-center font-heading">
+                      <i data-lucide="user" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-heading text-base text-slate-800 leading-tight">drh. Rahmat Santoso, M.Sc</h4>
+                      <p class="text-xs text-slate-500">Spesialis Reproduksi Hewan Ternak</p>
+                      <span class="text-[11px] text-brand-olive font-semibold mt-0.5 inline-block">Jadwal Praktik: 09:00 - 16:00 WIB</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Maps Placeholder from Wireframe Page 7 -->
+              <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 relative min-h-[220px] flex flex-col items-center justify-center p-4 text-center">
+                <!-- Map UI representation -->
+                <div class="absolute inset-0 opacity-40 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                
+                <div class="relative z-10 space-y-2">
+                  <div class="w-12 h-12 rounded-full bg-brand-teal text-white mx-auto flex items-center justify-center shadow-lg animate-bounce">
+                    <i data-lucide="map-pin" class="w-6 h-6"></i>
+                  </div>
+                  <h4 class="font-heading text-slate-800 text-lg">Peta Lokasi Klinik</h4>
+                  <p class="text-xs text-slate-500">Klik untuk membuka rute penunjuk arah via Google Maps</p>
+                  <a href="https://maps.google.com" target="_blank" class="inline-block btn-teal px-4 py-2 rounded-xl font-heading text-xs mt-2">
+                    Buka Rute Navigasi
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="view-tanya-dokter" class="view-screen max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="space-y-6">
+        <div>
+          <h2 class="font-heading text-3xl text-brand-tealDark">Tanya Dokter (User / Peternak)</h2>
+          <p class="text-slate-500 text-sm">Konsultasikan keluhan hewan Anda dengan dokter hewan berpengalaman</p>
+        </div>
+
+        <!-- Filter Bar: Spesialisasi, Jenis Hewan, Bagian Tubuh, Urutkan (Page 10) -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Spesialisasi</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              <option>Semua Spesialis</option>
+              <option>Kesehatan Ruminansia (Sapi/Kambing)</option>
+              <option>Penyakit Dalam Hewan</option>
+              <option>Bedah & Traumatologi</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Jenis Hewan</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              <option>Kambing / Domba</option>
+              <option>Sapi Potong / Perah</option>
+              <option>Kucing / Anjing</option>
+              <option>Unggas (Ayam / Bebek)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Bagian Tubuh</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              <option>Mulut & Pencernaan</option>
+              <option>Kulit & Bulu</option>
+              <option>Kaki & Kuku</option>
+              <option>Pernapasan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Urutkan</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 text-sm">
+              <option>Rating Tertinggi</option>
+              <option>Online Sekarang</option>
+              <option>Biaya Terendah</option>
+            </select>
+          </div>
+
+          <div>
+            <button class="w-full btn-teal py-2.5 rounded-xl font-heading text-sm shadow-sm flex items-center justify-center gap-2">
+              <i data-lucide="search" class="w-4 h-4"></i> Cari Dokter
+            </button>
+          </div>
+        </div>
+
+        <!-- Doctor Cards Results List (Page 10) -->
+        <div class="space-y-4">
+          <!-- Doctor 1: Dr. dr. Ir. Palupi Fitria Ningrum (From Wireframe Page 9 & 10) -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 hover:border-brand-teal transition shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-5">
+              <div class="relative">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-teal to-brand-olive text-white flex items-center justify-center font-heading text-2xl shadow-md">
+                  PF
+                </div>
+                <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full"></span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-heading text-xl text-slate-800">Dr. dr. Ir. Palupi Fitria Ningrum, ST, MT, M.Kes, PhD</h3>
+                  <span class="px-2 py-0.5 rounded bg-brand-olivePale text-brand-olive text-xs font-bold">Online</span>
+                </div>
+                <p class="text-sm text-brand-teal font-medium">Spesialis Penyakit Hewan Ruminansia & Mukbang Ternak</p>
+                <div class="flex items-center gap-4 text-xs text-slate-500 pt-1">
+                  <span class="flex items-center gap-1 text-amber-500 font-bold"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i> 4.98</span>
+                  <span>• Pengalaman 14 Tahun</span>
+                  <span>• 1.400+ Konsultasi Selesai</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex md:flex-col items-end gap-3 w-full md:w-auto justify-between border-t md:border-t-0 pt-4 md:pt-0">
+              <div class="text-right">
+                <span class="text-xs text-slate-400 block">Biaya Konsultasi</span>
+                <span class="font-heading text-2xl text-brand-tealDark">Rp 35.000</span>
+              </div>
+              <button onclick="openPaymentModal()" class="btn-olive px-6 py-2.5 rounded-xl font-heading text-sm shadow-md hover:scale-105 transition flex items-center gap-2">
+                <i data-lucide="message-square" class="w-4 h-4"></i> Konsultasi Sekarang
+              </button>
+            </div>
+          </div>
+
+          <!-- Doctor 2 -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 hover:border-brand-teal transition shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-5">
+              <div class="relative">
+                <div class="w-20 h-20 rounded-2xl bg-slate-200 text-slate-600 flex items-center justify-center font-heading text-2xl shadow-sm">
+                  BA
+                </div>
+                <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full"></span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-heading text-xl text-slate-800">drh. Bagus Anggoro, M.Vet</h3>
+                  <span class="px-2 py-0.5 rounded bg-brand-olivePale text-brand-olive text-xs font-bold">Online</span>
+                </div>
+                <p class="text-sm text-brand-teal font-medium">Spesialis Unggas & Kesehatan Kambing Perah</p>
+                <div class="flex items-center gap-4 text-xs text-slate-500 pt-1">
+                  <span class="flex items-center gap-1 text-amber-500 font-bold"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i> 4.89</span>
+                  <span>• Pengalaman 8 Tahun</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex md:flex-col items-end gap-3 w-full md:w-auto justify-between border-t md:border-t-0 pt-4 md:pt-0">
+              <div class="text-right">
+                <span class="text-xs text-slate-400 block">Biaya Konsultasi</span>
+                <span class="font-heading text-2xl text-brand-tealDark">Rp 25.000</span>
+              </div>
+              <button onclick="openPaymentModal()" class="btn-olive px-6 py-2.5 rounded-xl font-heading text-sm shadow-md hover:scale-105 transition flex items-center gap-2">
+                <i data-lucide="message-square" class="w-4 h-4"></i> Konsultasi Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-chat-dokter" class="view-screen max-w-4xl mx-auto px-4 py-8">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden flex flex-col h-[750px]">
+        <!-- Doctor Chat Header (Page 9 wireframe: Dr. Palupi Fitria) -->
+        <div class="bg-brand-tealDark text-white p-4 px-6 flex items-center justify-between border-b border-brand-teal">
+          <div class="flex items-center gap-3">
+            <button onclick="switchScreen('tanya-dokter')" class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <div class="w-10 h-10 rounded-full bg-brand-oliveSoft text-brand-tealDark flex items-center justify-center font-heading">
+              PF
+            </div>
+            <div>
+              <h3 class="font-heading text-base leading-tight">Dr. dr. Ir. Palupi Fitria Ningrum, ST., MT., M.Kes., PhD</h3>
+              <p class="text-[11px] text-brand-tealSoft">Spesialis Penyakit Ruminansia • Sesi Aktif</p>
+            </div>
+          </div>
+
+          <!-- Countdown timer & Selesai button from wireframe -->
+          <div class="flex items-center gap-3">
+            <div class="bg-white/10 px-3 py-1 rounded-lg border border-white/20 text-xs font-mono text-brand-olivePale">
+              <span id="chatTimer">29:45</span>
+            </div>
+            <button onclick="endChatSession()" id="btnEndChat" class="btn-olive px-4 py-1.5 rounded-lg text-xs font-heading">
+              Selesai
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Messages History (Interactive from Page 9 wireframe) -->
+        <div id="chatMessageArea" class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50">
+          
+          <!-- Doctor Message Bubble -->
+          <div class="flex items-start gap-3 max-w-[85%]">
+            <div class="w-8 h-8 rounded-full bg-brand-tealSoft text-brand-tealDark flex items-center justify-center font-heading text-xs shrink-0 mt-1">
+              PF
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-4 shadow-sm space-y-1">
+              <span class="text-[11px] font-bold text-brand-teal block">Dr. dr. Ir. Palupi Fitria</span>
+              <p class="text-sm text-slate-800">
+                Selamat siang Pak Prabowo, langsung saja ya. Yang sakit bapak atau hewan bapak ya? Bisa tolong jelaskan gejalanya?
+              </p>
+              <span class="text-[10px] text-slate-400 block text-right">14:02 WIB</span>
+            </div>
+          </div>
+
+          <!-- User Message Bubble (from wireframe text: Kambing berbusa) -->
+          <div class="flex items-start gap-3 max-w-[85%] ml-auto justify-end">
+            <div class="bg-brand-teal text-white rounded-2xl rounded-tr-none p-4 shadow-sm space-y-1">
+              <span class="text-[11px] font-bold text-brand-tealSoft block">Prabowo (Peternak)</span>
+              <p class="text-sm">
+                Siang dok! Jadi kambing saya mengeluarkan busa di mulutnya setelah saya kasih makan rumput gajah basah dok. Apakah keracunan?
+              </p>
+              <span class="text-[10px] text-brand-tealPale block text-right">14:05 WIB</span>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-brand-olive text-white flex items-center justify-center font-heading text-xs shrink-0 mt-1">
+              P
+            </div>
+          </div>
+
+          <!-- Doctor Diagnosis Message -->
+          <div class="flex items-start gap-3 max-w-[85%]">
+            <div class="w-8 h-8 rounded-full bg-brand-tealSoft text-brand-tealDark flex items-center justify-center font-heading text-xs shrink-0 mt-1">
+              PF
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-4 shadow-sm space-y-1">
+              <span class="text-[11px] font-bold text-brand-teal block">Dr. dr. Ir. Palupi Fitria</span>
+              <p class="text-sm text-slate-800">
+                Baik pak, segera pisahkan kambing tersebut dari kelompoknya. Berikan cairan arang aktif atau larutan gula merah hangat untuk menetralisir racun lambung sementara sebelum kami resepkan injeksi atropin sulfat.
+              </p>
+              <span class="text-[10px] text-slate-400 block text-right">14:07 WIB</span>
+            </div>
+          </div>
+
+          <!-- Ended State Notification Banner (Hidden by default, shown when session ended - Page 11) -->
+          <div id="chatEndedBanner" class="p-3 bg-slate-200 rounded-xl text-center text-xs text-slate-600 font-bold uppercase tracking-wider hidden">
+            --- PERCAKAPAN BERAKHIR ---
+          </div>
+
+        </div>
+
+        <!-- Chat Input Bar (Page 9) -->
+        <div class="p-4 bg-white border-t border-slate-200 flex items-center gap-3">
+          <input type="text" id="chatInput" placeholder="Ketik pesan Anda di sini..." class="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal" onkeydown="if(event.key==='Enter') sendChatMessage()">
+          <button onclick="sendChatMessage()" class="btn-teal p-3 rounded-xl shadow-sm hover:scale-105 transition">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-komunitas" class="view-screen max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Community Channels Sidebar -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="font-heading text-xl text-brand-tealDark">Komunitas Peternak</h3>
+            <!-- Unread badge from Page 9 & 11 wireframe: "67 Pesan Belum Dibaca" -->
+            <span class="px-2.5 py-1 rounded-full bg-brand-orange text-white text-[11px] font-bold">
+              67 Belum Dibaca
+            </span>
+          </div>
+
+          <div class="space-y-2 text-sm font-semibold">
+            <div class="p-3 rounded-xl bg-brand-tealPale text-brand-teal flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Peternak Kambing & Domba</span>
+              <span class="w-2 h-2 rounded-full bg-brand-teal"></span>
+            </div>
+            <div class="p-3 rounded-xl hover:bg-slate-50 text-slate-700 flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Asosiasi Sapi Nusantara</span>
+            </div>
+            <div class="p-3 rounded-xl hover:bg-slate-50 text-slate-700 flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Pecinta Kucing & Anjing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Feed Discussion -->
+        <div class="lg:col-span-2 space-y-5">
+          <!-- Create Post Box -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-oliveSoft text-brand-tealDark flex items-center justify-center font-heading shrink-0">
+              P
+            </div>
+            <div class="flex-1 space-y-3">
+              <textarea placeholder="Tuliskan pengalaman atau pertanyaan Anda untuk peternak lain..." class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal h-20 resize-none"></textarea>
+              <div class="flex justify-between items-center">
+                <div class="flex gap-2 text-slate-400">
+                  <button class="hover:text-brand-teal"><i data-lucide="image" class="w-5 h-5"></i></button>
+                  <button class="hover:text-brand-teal"><i data-lucide="paperclip" class="w-5 h-5"></i></button>
+                </div>
+                <button class="btn-teal px-5 py-2 rounded-xl font-heading text-xs">Kirim Postingan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Community Thread Item -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-brand-teal text-white flex items-center justify-center font-heading">
+                  HS
+                </div>
+                <div>
+                  <h4 class="font-heading text-slate-800 text-sm">Haji Slamet (Peternak Magelang)</h4>
+                  <span class="text-xs text-slate-400">2 jam yang lalu • Kambing & Domba</span>
+                </div>
+              </div>
+              <button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-horizontal" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-slate-700 text-sm leading-relaxed">
+              Mau tanya rekan-rekan, ada yang punya pengalaman silase jagung untuk pakan cempe umur 3 bulan? Apakah aman untuk pencernaannya atau perlu dicampur bekatul dulu?
+            </p>
+            <div class="pt-2 flex items-center gap-6 text-xs text-slate-500 font-semibold border-t border-slate-100">
+              <button class="hover:text-brand-teal flex items-center gap-1.5"><i data-lucide="heart" class="w-4 h-4"></i> 24 Suka</button>
+              <button class="hover:text-brand-teal flex items-center gap-1.5"><i data-lucide="message-circle" class="w-4 h-4"></i> 18 Komentar</button>
+              <button class="hover:text-brand-teal flex items-center gap-1.5"><i data-lucide="share-2" class="w-4 h-4"></i> Bagikan</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="view-profile" class="view-screen max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation (Matched to Wireframe Page 1 Sidebar) -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm h-fit space-y-6">
+          <!-- User info header -->
+          <div class="flex items-center gap-3 pb-5 border-b border-slate-100">
+            <div class="w-12 h-12 rounded-full bg-brand-oliveSoft text-brand-tealDark flex items-center justify-center font-heading text-lg ring-2 ring-brand-tealLight">
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-heading text-lg text-slate-800 leading-tight">Prabowo</h3>
+              <span class="text-xs text-slate-400">Peternak Terverifikasi</span>
+            </div>
+          </div>
+
+          <!-- Sidebar Menu Links (Page 1 wireframe: Public Profile, Animal List, Riwayat Pemeriksaan, Archive, Settings, Help, Log Out) -->
+          <nav class="space-y-1.5 text-sm font-semibold">
+            <button onclick="setProfileTab('public-profile')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition active-sub" data-target="public-profile">
+              <i data-lucide="user" class="w-4 h-4 text-brand-teal"></i> Public Profile
+            </button>
+            
+            <button onclick="setProfileTab('animal-list')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition" data-target="animal-list">
+              <i data-lucide="folder-heart" class="w-4 h-4 text-brand-olive"></i> Animal List
+            </button>
+
+            <button onclick="setProfileTab('riwayat')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition" data-target="riwayat">
+              <i data-lucide="clipboard-list" class="w-4 h-4 text-brand-orange"></i> Riwayat Pemeriksaan
+            </button>
+
+            <button onclick="setProfileTab('archive')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition" data-target="archive">
+              <i data-lucide="archive" class="w-4 h-4 text-brand-coral"></i> Archive
+            </button>
+
+            <button onclick="setProfileTab('settings')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition" data-target="settings">
+              <i data-lucide="settings" class="w-4 h-4 text-slate-500"></i> Settings
+            </button>
+
+            <button onclick="setProfileTab('help')" class="profile-sub-btn w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center gap-3 transition" data-target="help">
+              <i data-lucide="help-circle" class="w-4 h-4 text-slate-500"></i> Help Page
+            </button>
+
+            <div class="pt-4 border-t border-slate-100">
+              <button onclick="openLogoutModal()" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-red-50 text-red-600 flex items-center gap-3 transition">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Log Out
+              </button>
+            </div>
+          </nav>
+        </div>
+
+        <!-- Sub Content Sections for Profile Tabs -->
+        <div class="lg:col-span-3">
+
+          <!-- 1a. Public Profile Tab (Page 1) -->
+          <div id="sub-public-profile" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-slate-100">
+              <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-brand-teal to-brand-olive text-white flex items-center justify-center font-heading text-3xl shadow-lg ring-4 ring-brand-tealPale">
+                <i data-lucide="user" class="w-14 h-14"></i>
+              </div>
+              <div class="space-y-2 text-center sm:text-left flex-1">
+                <h3 class="font-heading text-3xl text-brand-tealDark">Prabowo Subianto</h3>
+                <p class="text-sm text-slate-500">Peternak Kambing Etawa & Domba Garut • Member sejak 2024</p>
+                <p class="text-sm text-slate-700 italic max-w-xl">"Berfokus pada pemuliaan ternak sehat berbasis pakan organik dan teknologi pemantauan rutin."</p>
+                <div class="flex items-center gap-2 text-xs text-slate-500 justify-center sm:justify-start">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-brand-teal"></i> Bojong Koneng, Babakan Madang, Bogor
+                </div>
+              </div>
+            </div>
+
+            <!-- Statistics Grid (Animals Registered, Scans Done, Number of Post - Wireframe Page 1) -->
+            <div>
+              <h4 class="font-heading text-lg text-slate-800 mb-4">Statistik Akun</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-brand-tealPale p-5 rounded-2xl border border-brand-tealSoft text-center space-y-1">
+                  <span class="text-xs font-bold uppercase text-brand-teal">Animals Registered</span>
+                  <span class="font-heading text-3xl text-brand-tealDark block">12 Ekor</span>
+                </div>
+                <div class="bg-brand-olivePale p-5 rounded-2xl border border-brand-oliveSoft text-center space-y-1">
+                  <span class="text-xs font-bold uppercase text-brand-olive">Scans Done</span>
+                  <span class="font-heading text-3xl text-brand-oliveDark block">48 Kali</span>
+                </div>
+                <div class="bg-brand-orangePale p-5 rounded-2xl border border-brand-orangeLight/40 text-center space-y-1">
+                  <span class="text-xs font-bold uppercase text-brand-orange">Number of Posts</span>
+                  <span class="font-heading text-3xl text-brand-orange block">19 Post</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1b. Animal List Tab (Page 1 & 2) -->
+          <div id="sub-animal-list" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 hidden">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-heading text-2xl text-brand-tealDark">Animal List</h3>
+                <p class="text-xs text-slate-500">Daftar hewan ternak yang terdaftar dalam pantauan kesehatan</p>
+              </div>
+              <button onclick="openModal('addAnimalModal')" class="btn-olive px-4 py-2 rounded-xl font-heading text-xs flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="plus" class="w-4 h-4"></i> Tambah Hewan (Add)
+              </button>
+            </div>
+
+            <!-- Animal Cards Grid (Animal 1, 2, 3, 4 - Page 1 & Page 2 c) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              
+              <!-- Animal 1 Card -->
+              <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 hover:border-brand-teal transition space-y-4">
+                <div class="h-36 rounded-xl bg-slate-200 flex items-center justify-center text-slate-400 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-tr from-brand-teal/20 to-brand-olive/20 flex items-center justify-center">
+                    <i data-lucide="tag" class="w-10 h-10 text-brand-teal"></i>
+                  </div>
+                  <span class="absolute top-2 left-2 bg-brand-teal text-white text-[10px] font-bold px-2 py-0.5 rounded">ID: KMB-001</span>
+                </div>
+                <div>
+                  <h4 class="font-heading text-lg text-slate-800">Si Bimo (Kambing Etawa)</h4>
+                  <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 mt-2">
+                    <div>Jenis: <span class="font-semibold">Etawa Jantan</span></div>
+                    <div>Usia: <span class="font-semibold">2.5 Tahun</span></div>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2 bg-white p-2 rounded-lg border border-slate-100">
+                    <span class="font-bold text-brand-teal">Riwayat:</span> Vaksinasi PMK lengkap, pemulihan diare pada Juli 2026.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Animal 2 Card -->
+              <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 hover:border-brand-teal transition space-y-4">
+                <div class="h-36 rounded-xl bg-slate-200 flex items-center justify-center text-slate-400 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-tr from-brand-olive/20 to-brand-orange/20 flex items-center justify-center">
+                    <i data-lucide="tag" class="w-10 h-10 text-brand-olive"></i>
+                  </div>
+                  <span class="absolute top-2 left-2 bg-brand-olive text-white text-[10px] font-bold px-2 py-0.5 rounded">ID: SP-002</span>
+                </div>
+                <div>
+                  <h4 class="font-heading text-lg text-slate-800">Si Loreng (Sapi Limosin)</h4>
+                  <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 mt-2">
+                    <div>Jenis: <span class="font-semibold">Limosin Jantan</span></div>
+                    <div>Usia: <span class="font-semibold">3 Tahun</span></div>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2 bg-white p-2 rounded-lg border border-slate-100">
+                    <span class="font-bold text-brand-olive">Riwayat:</span> Pemeriksaan kuku rutin, berat badan 650kg stabil.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 1d. Riwayat Pemeriksaan Tab (Page 2) -->
+          <div id="sub-riwayat" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 hidden">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-heading text-2xl text-brand-tealDark">Riwayat Pemeriksaan</h3>
+                <p class="text-xs text-slate-500">Histori hasil scan dan konsultasi dokter hewan</p>
+              </div>
+              <button class="border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-semibold hover:bg-slate-50 flex items-center gap-1.5">
+                <i data-lucide="filter" class="w-4 h-4"></i> Filter
+              </button>
+            </div>
+
+            <!-- List items wireframe from Page 2 d -->
+            <div class="space-y-3">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-brand-tealPale text-brand-teal flex items-center justify-center">
+                    <i data-lucide="scan" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-heading text-sm text-slate-800">Scan Kulit Si Bimo (Etawa)</h5>
+                    <p class="text-xs text-slate-500">22 September 2026 • Indikasi Jamur Kulit Ringan</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-brand-teal bg-white px-3 py-1 rounded-full border border-slate-200">Selesai</span>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-brand-olivePale text-brand-olive flex items-center justify-center">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-heading text-sm text-slate-800">Konsultasi Dr. Palupi Fitria</h5>
+                    <p class="text-xs text-slate-500">18 September 2026 • Kasus Mulut Berbusa</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-brand-olive bg-white px-3 py-1 rounded-full border border-slate-200">Terobati</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1e. Archive Tab (Page 2 e) -->
+          <div id="sub-archive" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 hidden">
+            <h3 class="font-heading text-2xl text-brand-tealDark">Archive (Arsip)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button class="p-4 rounded-2xl bg-slate-50 hover:bg-brand-tealPale border border-slate-200 text-left transition flex items-center justify-between">
+                <span class="font-semibold text-sm flex items-center gap-2"><i data-lucide="heart" class="w-4 h-4 text-rose-500"></i> Postingan Disukai (Like)</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+              </button>
+              <button class="p-4 rounded-2xl bg-slate-50 hover:bg-brand-tealPale border border-slate-200 text-left transition flex items-center justify-between">
+                <span class="font-semibold text-sm flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4 text-brand-teal"></i> Komentar Saya (Comments)</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+              </button>
+              <button class="p-4 rounded-2xl bg-slate-50 hover:bg-brand-tealPale border border-slate-200 text-left transition flex items-center justify-between">
+                <span class="font-semibold text-sm flex items-center gap-2"><i data-lucide="bookmark" class="w-4 h-4 text-brand-olive"></i> Tersimpan (Saved)</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+              </button>
+              <button class="p-4 rounded-2xl bg-slate-50 hover:bg-brand-tealPale border border-slate-200 text-left transition flex items-center justify-between">
+                <span class="font-semibold text-sm flex items-center gap-2"><i data-lucide="trash-2" class="w-4 h-4 text-slate-500"></i> Baru Dihapus (Recently Deleted)</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- 1f. Settings Tab (Page 3 f) -->
+          <div id="sub-settings" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 hidden">
+            <h3 class="font-heading text-2xl text-brand-tealDark">Settings (Pengaturan)</h3>
+            <div class="space-y-3">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition">
+                <div>
+                  <h5 class="font-heading text-sm text-slate-800">Change Password</h5>
+                  <p class="text-xs text-slate-500">Ubah kata sandi akun demi keamanan data Anda</p>
+                </div>
+                <i data-lucide="key" class="w-4 h-4 text-slate-400"></i>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition">
+                <div>
+                  <h5 class="font-heading text-sm text-slate-800">Notification Settings</h5>
+                  <p class="text-xs text-slate-500">Atur pemberitahuan jadwal periksa dan promo</p>
+                </div>
+                <i data-lucide="bell" class="w-4 h-4 text-slate-400"></i>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition">
+                <div>
+                  <h5 class="font-heading text-sm text-slate-800">Account Privacy</h5>
+                  <p class="text-xs text-slate-500">Atur visibilitas data ternak dan lokasi Anda</p>
+                </div>
+                <i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition">
+                <div>
+                  <h5 class="font-heading text-sm text-slate-800">Language</h5>
+                  <p class="text-xs text-slate-500">Bahasa Indonesia (Default)</p>
+                </div>
+                <i data-lucide="globe" class="w-4 h-4 text-slate-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1g. Help Page Tab (Page 3 g) -->
+          <div id="sub-help" class="profile-tab-content bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 hidden">
+            <h3 class="font-heading text-2xl text-brand-tealDark">Pusat Bantuan (Help Page)</h3>
+            <div class="space-y-3">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <h5 class="font-heading text-sm text-slate-800 mb-1">Bagaimana cara kerja AI Scan Ternak?</h5>
+                <p class="text-xs text-slate-600">Sistem membandingkan foto gejala fisik dengan ribuan database penyakit ternak untuk memberikan dugaan awal.</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <h5 class="font-heading text-sm text-slate-800 mb-1">Berapa lama batas waktu chat konsultasi dokter?</h5>
+                <p class="text-xs text-slate-600">Satu sesi percakapan dokter berdurasi 30 menit terhitung setelah pembayaran terverifikasi.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-brand-tealDark text-white border-t border-brand-teal mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-brand-tealLight flex items-center justify-center text-white">
+              <i data-lucide="cross" class="w-5 h-5"></i>
+            </div>
+            <span class="font-heading text-xl text-white">AniMedix</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Platform ekosistem kesehatan hewan & ternak terpadu di Indonesia. Menjembatani peternak, dokter spesialis, dan klinik kesehatan hewan.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-heading text-sm text-brand-tealSoft uppercase tracking-wider mb-3">Layanan</h4>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li><a href="javascript:void(0)" onclick="switchScreen('scan')" class="hover:text-white">Scan AI Hewan</a></li>
+            <li><a href="javascript:void(0)" onclick="switchScreen('tanya-dokter')" class="hover:text-white">Konsultasi Dokter Hewan</a></li>
+            <li><a href="javascript:void(0)" onclick="switchScreen('klinik')" class="hover:text-white">Direktori Klinik Terdekat</a></li>
+            <li><a href="javascript:void(0)" onclick="switchScreen('komunitas')" class="hover:text-white">Forum Komunitas Peternak</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-heading text-sm text-brand-tealSoft uppercase tracking-wider mb-3">Informasi</h4>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li><a href="javascript:void(0)" onclick="switchScreen('landing')" class="hover:text-white">Blog Edukasi Peternakan</a></li>
+            <li><a href="javascript:void(0)" onclick="switchScreen('profile')" class="hover:text-white">Pusat Bantuan</a></li>
+            <li><a href="javascript:void(0)" class="hover:text-white">Syarat & Ketentuan</a></li>
+            <li><a href="javascript:void(0)" class="hover:text-white">Kebijakan Privasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-heading text-sm text-brand-tealSoft uppercase tracking-wider mb-3">Palet Desain (Grand Design)</h4>
+          <div class="flex gap-2">
+            <div class="w-6 h-6 rounded-full bg-[#1f646b]" title="Teal Primary"></div>
+            <div class="w-6 h-6 rounded-full bg-[#21abb8]" title="Teal Light"></div>
+            <div class="w-6 h-6 rounded-full bg-[#7d9e43]" title="Olive Accent"></div>
+            <div class="w-6 h-6 rounded-full bg-[#eb792b]" title="Orange CTA"></div>
+            <div class="w-6 h-6 rounded-full bg-[#a85c62]" title="Coral Sub"></div>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2">Dibuat sesuai spesifikasi dokumen lo-fi wireframe & grand design.</p>
+        </div>
+      </div>
+
+      <div class="pt-8 mt-8 border-t border-white/10 text-center text-xs text-slate-400">
+        © 2026 AniMedix. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- LOGIN MODAL (Page 5: AniMedix Selamat Datang Masuk) -->
+  <div id="loginModal" class="figma-modal-block fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200">
+      <div class="bg-gradient-to-r from-brand-teal to-brand-tealDeep text-white p-6 text-center relative">
+        <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-white/80 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="w-12 h-12 rounded-xl bg-white/20 mx-auto flex items-center justify-center mb-2">
+          <i data-lucide="cross" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-heading text-2xl">Selamat Datang</h3>
+        <p class="text-xs text-brand-tealPale">Masuk ke akun AniMedix Anda</p>
+      </div>
+
+      <form onsubmit="handleAuthSubmit(event, 'login')" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Username / Email</label>
+          <input type="text" value="prabowo@peternak.id" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Password</label>
+          <input type="password" value="********" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal">
+        </div>
+
+        <button type="submit" class="w-full btn-teal py-3 rounded-xl font-heading text-base shadow-sm">
+          Masuk
+        </button>
+
+        <div class="text-center text-xs text-slate-500 pt-2">
+          Belum punya akun? <a href="javascript:void(0)" onclick="closeModal('loginModal'); openModal('registerModal');" class="text-brand-teal font-bold hover:underline">Daftar Sekarang</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- REGISTER MODAL (Page 7 & 8: Pendaftaran Step 1 & 2) -->
+  <div id="registerModal" class="figma-modal-block fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200">
+      <div class="bg-gradient-to-r from-brand-olive to-brand-teal text-white p-6 text-center relative">
+        <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-white/80 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <h3 class="font-heading text-2xl">Pendaftaran Akun AniMedix</h3>
+        <p class="text-xs text-brand-olivePale" id="regStepTitle">Langkah 1 dari 2: Informasi Akun</p>
+      </div>
+
+      <!-- Step 1 Form (Page 7: username, email, password, konfirmasi password) -->
+      <form id="regStep1" onsubmit="event.preventDefault(); nextRegisterStep(2)" class="p-6 space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Username</label>
+          <input type="text" placeholder="Masukkan username" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Email</label>
+          <input type="email" placeholder="nama@email.com" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Password</label>
+          <input type="password" placeholder="Minimal 8 karakter" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Konfirmasi Password</label>
+          <input type="password" placeholder="Ulangi password" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div class="pt-2">
+          <button type="submit" class="w-full btn-olive py-3 rounded-xl font-heading text-base">
+            Lanjut ke Data Diri
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 2 Form (Page 8: nama lengkap, nik, alamat rumah, no hp, [Lanjut]) -->
+      <form id="regStep2" onsubmit="handleAuthSubmit(event, 'register')" class="p-6 space-y-3 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap</label>
+          <input type="text" placeholder="Sesuai KTP" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">NIK (Nomor Induk Kependudukan)</label>
+          <input type="text" placeholder="16 digit NIK" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Alamat Rumah</label>
+          <input type="text" placeholder="Desa, Kecamatan, Kabupaten" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp / HP</label>
+          <input type="tel" placeholder="08xxxxxxxxxx" required class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        </div>
+        <div class="pt-2 flex gap-3">
+          <button type="button" onclick="nextRegisterStep(1)" class="w-1/3 border border-slate-300 py-3 rounded-xl font-heading text-sm">Kembali</button>
+          <button type="submit" class="w-2/3 btn-teal py-3 rounded-xl font-heading text-base">Selesaikan Pendaftaran</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAYMENT MODAL (Page 10: QR Code, "Bayar Sebelum Kiamat / Countdown", Transaksi Berhasil) -->
+  <div id="paymentModal" class="figma-modal-block fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200">
+      
+      <!-- Payment Invoice Step -->
+      <div id="paymentStepQR" class="p-6 text-center space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+          <h3 class="font-heading text-xl text-brand-tealDark">Pembayaran Konsultasi</h3>
+          <button onclick="closeModal('paymentModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <div class="text-left bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+          <span class="text-[11px] text-slate-400 block">Dokter Pilihan:</span>
+          <span class="font-heading text-sm text-slate-800 block">Dr. dr. Ir. Palupi Fitria Ningrum</span>
+          <span class="text-xs text-brand-teal font-semibold">Total Tagihan: Rp 35.000</span>
+        </div>
+
+        <!-- QR Code Display Box (Page 10) -->
+        <div class="bg-white p-4 rounded-2xl border-2 border-dashed border-slate-300 inline-block shadow-inner">
+          <div class="w-48 h-48 bg-slate-900 rounded-xl flex flex-col items-center justify-center text-white p-3 relative">
+            <!-- Simulated QR code pattern -->
+            <div class="w-40 h-40 border-4 border-white flex flex-col justify-between p-2">
+              <div class="flex justify-between">
+                <div class="w-8 h-8 bg-white"></div>
+                <div class="w-8 h-8 bg-white"></div>
+              </div>
+              <div class="text-center font-mono text-[10px] tracking-widest text-brand-tealSoft">QRIS ANIMEDIX</div>
+              <div class="flex justify-start">
+                <div class="w-8 h-8 bg-white"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <span class="text-xs text-slate-500 font-semibold">Selesaikan Pembayaran Sebelum:</span>
+          <div class="inline-block px-3 py-1 rounded-full bg-rose-100 text-rose-600 font-mono text-sm font-bold">
+            04:59 WIB
+          </div>
+        </div>
+
+        <button onclick="simulatePaymentSuccess()" class="w-full btn-teal py-3 rounded-xl font-heading text-base shadow-sm">
+          Simulasikan Bayar Sukses
+        </button>
+      </div>
+
+      <!-- Payment Success Step (Page 10: "Pembayaran Berhasil / Transaksi Berhasil") -->
+      <div id="paymentStepSuccess" class="p-8 text-center space-y-4 hidden">
+        <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center animate-bounce">
+          <i data-lucide="check" class="w-10 h-10 stroke-[3]"></i>
+        </div>
+        <div>
+          <h3 class="font-heading text-2xl text-slate-800">TRANSAKSI BERHASIL</h3>
+          <p class="text-xs text-slate-500 mt-1">Waktu percakapan dimulai setelah klik "Masuk Ruang Chat"</p>
+        </div>
+        <button onclick="enterChatRoom()" class="w-full btn-olive py-3 rounded-xl font-heading text-base shadow-md">
+          Masuk Ruang Chat Sekarang
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOG OUT CONFIRMATION MODAL (Wireframe Page 4: "Are you sure you want to Log Out?") -->
+  <div id="logoutModal" class="figma-modal-block fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-slate-200">
+      <div class="w-14 h-14 rounded-full bg-rose-100 text-rose-600 mx-auto flex items-center justify-center">
+        <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+      </div>
+      <div>
+        <h3 class="font-heading text-xl text-slate-800">Are you sure you want to Log Out?</h3>
+        <p class="text-xs text-slate-500 mt-1">Anda harus login kembali untuk mengakses data hewan dan riwayat konsultasi.</p>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="closeModal('logoutModal')" class="flex-1 py-2.5 rounded-xl border border-slate-200 font-heading text-sm hover:bg-slate-50">
+          Cancel
+        </button>
+        <button onclick="confirmLogout()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-heading text-sm shadow-sm">
+          Log Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      // Otomatis aktifkan mode jika URL memiliki parameter ?all=true
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('all') === 'true') {
+        enableFigmaMode();
+      }
+    });
+
+    // Toggle Figma Mode (Menampilkan semua halaman sekaligus)
+    function toggleFigmaMode() {
+      if (document.body.classList.contains('figma-mode')) {
+        disableFigmaMode();
+      } else {
+        enableFigmaMode();
+      }
+    }
+
+    function enableFigmaMode() {
+      document.body.classList.add('figma-mode');
+      const btn = document.getElementById('btnFigmaMode');
+      if (btn) btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Mode Normal';
+      
+      // Buka modal-modal agar ikut ter-capture
+      document.querySelectorAll('.figma-modal-block').forEach(m => m.classList.remove('hidden'));
+      // Buka juga tab gallery pada scan
+      const gal = document.getElementById('scan-gallery-container');
+      if (gal) gal.classList.remove('hidden');
+      const res = document.getElementById('scan-result-card');
+      if (res) res.classList.remove('hidden');
+      
+      lucide.createIcons();
+    }
+
+    function disableFigmaMode() {
+      document.body.classList.remove('figma-mode');
+      const btn = document.getElementById('btnFigmaMode');
+      if (btn) btn.innerHTML = '<i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Figma Mode: Show All';
+      
+      document.querySelectorAll('.figma-modal-block').forEach(m => m.classList.add('hidden'));
+      switchScreen('landing');
+      lucide.createIcons();
+    }
+
+    // Screen Switching Controller
+    function switchScreen(screenId) {
+      // Hide all views
+      document.querySelectorAll('.view-screen').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Show selected screen
+      const target = document.getElementById(`view-${screenId}`);
+      if (target) {
+        target.classList.add('active');
+      }
+
+      // Update prototype nav bar buttons active state
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-target') === screenId) {
+          btn.classList.add('bg-brand-teal', 'ring-2', 'ring-white');
+          btn.classList.remove('bg-brand-tealDeep');
+        } else {
+          btn.classList.remove('bg-brand-teal', 'ring-2', 'ring-white');
+          btn.classList.add('bg-brand-tealDeep');
+        }
+      });
+
+      // Re-trigger icon rendering for dynamically shown elements
+      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Scan Mode Switcher (Camera vs Gallery)
+    function setScanMode(mode) {
+      const camContainer = document.getElementById('scan-camera-container');
+      const galContainer = document.getElementById('scan-gallery-container');
+      const btnCam = document.getElementById('btn-mode-camera');
+      const btnGal = document.getElementById('btn-mode-gallery');
+
+      if (mode === 'camera') {
+        camContainer.classList.remove('hidden');
+        galContainer.classList.add('hidden');
+        btnCam.classList.add('bg-white', 'shadow-sm', 'text-brand-teal');
+        btnCam.classList.remove('text-slate-600');
+        btnGal.classList.remove('bg-white', 'shadow-sm', 'text-brand-teal');
+        btnGal.classList.add('text-slate-600');
+      } else {
+        camContainer.classList.add('hidden');
+        galContainer.classList.remove('hidden');
+        btnGal.classList.add('bg-white', 'shadow-sm', 'text-brand-teal');
+        btnGal.classList.remove('text-slate-600');
+        btnCam.classList.remove('bg-white', 'shadow-sm', 'text-brand-teal');
+        btnCam.classList.add('text-slate-600');
+      }
+    }
+
+    // Trigger AI Scan Result Preview
+    function triggerScanResult() {
+      const res = document.getElementById('scan-result-card');
+      res.classList.remove('hidden');
+      res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      lucide.createIcons();
+    }
+
+    function fileChosen(e) {
+      if (e.target.files && e.target.files[0]) {
+        triggerScanResult();
+      }
+    }
+
+    // Profile Sub-Tabs Controller (Public Profile, Animal List, etc.)
+    function setProfileTab(tabId) {
+      document.querySelectorAll('.profile-tab-content').forEach(el => {
+        el.classList.add('hidden');
+      });
+      const targetSub = document.getElementById(`sub-${tabId}`);
+      if (targetSub) {
+        targetSub.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('.profile-sub-btn').forEach(btn => {
+        if (btn.getAttribute('data-target') === tabId) {
+          btn.classList.add('bg-brand-tealPale', 'text-brand-teal');
+          btn.classList.remove('text-slate-700');
+        } else {
+          btn.classList.remove('bg-brand-tealPale', 'text-brand-teal');
+          btn.classList.add('text-slate-700');
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // Chat Message Logic
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const area = document.getElementById('chatMessageArea');
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start gap-3 max-w-[85%] ml-auto justify-end';
+      userBubble.innerHTML = `
+        <div class="bg-brand-teal text-white rounded-2xl rounded-tr-none p-4 shadow-sm space-y-1">
+          <span class="text-[11px] font-bold text-brand-tealSoft block">Prabowo (Peternak)</span>
+          <p class="text-sm">${escapeHtml(text)}</p>
+          <span class="text-[10px] text-brand-tealPale block text-right">Baru saja</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-brand-olive text-white flex items-center justify-center font-heading text-xs shrink-0 mt-1">
+          P
+        </div>
+      `;
+      area.appendChild(userBubble);
+      input.value = '';
+      area.scrollTop = area.scrollHeight;
+    }
+
+    function endChatSession() {
+      document.getElementById('chatEndedBanner').classList.remove('hidden');
+      document.getElementById('btnEndChat').disabled = true;
+      document.getElementById('btnEndChat').classList.add('opacity-50', 'cursor-not-allowed');
+      document.getElementById('chatInput').disabled = true;
+      document.getElementById('chatInput').placeholder = 'Sesi percakapan telah selesai.';
+    }
+
+    // Modal Handlers
+    function openModal(modalId) {
+      const m = document.getElementById(modalId);
+      if (m) {
+        m.classList.remove('hidden');
+        lucide.createIcons();
+      }
+    }
+
+    function closeModal(modalId) {
+      const m = document.getElementById(modalId);
+      if (m) m.classList.add('hidden');
+    }
+
+    function openPaymentModal() {
+      document.getElementById('paymentStepQR').classList.remove('hidden');
+      document.getElementById('paymentStepSuccess').classList.add('hidden');
+      openModal('paymentModal');
+    }
+
+    function simulatePaymentSuccess() {
+      document.getElementById('paymentStepQR').classList.add('hidden');
+      document.getElementById('paymentStepSuccess').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function enterChatRoom() {
+      closeModal('paymentModal');
+      switchScreen('chat-dokter');
+    }
+
+    function openLogoutModal() {
+      openModal('logoutModal');
+    }
+
+    function confirmLogout() {
+      closeModal('logoutModal');
+      switchScreen('landing');
+    }
+
+    function nextRegisterStep(step) {
+      if (step === 2) {
+        document.getElementById('regStep1').classList.add('hidden');
+        document.getElementById('regStep2').classList.remove('hidden');
+        document.getElementById('regStepTitle').innerText = 'Langkah 2 dari 2: Data Diri Peternak';
+      } else {
+        document.getElementById('regStep2').classList.add('hidden');
+        document.getElementById('regStep1').classList.remove('hidden');
+        document.getElementById('regStepTitle').innerText = 'Langkah 1 dari 2: Informasi Akun';
+      }
+    }
+
+    function handleAuthSubmit(e, type) {
+      e.preventDefault();
+      closeModal(type === 'login' ? 'loginModal' : 'registerModal');
+      switchScreen('dashboard');
+    }
+
+    // Utility: XSS prevention
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
